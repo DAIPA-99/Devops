@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+    backend:
+        container_name: my-backend
+        build: 
+            context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
+        networks:
+            - my-network
+        depends_on:
+            - database
+
+    database:
+        build:
+            context: "/Users/daipablandine/Desktop/Devops"
+        container_name: my-database
+        environment:
+            POSTGRES_PASSWORD: pwd
+        networks:
+            - my-network
+        volumes:
+            - docker-volume:/var/lib/postgresql/data
+
+    httpd:
+        container_name: my-httpd
+        build: 
+            context: "/Users/daipablandine/Desktop/Devops/http"
+        ports:
+            - "80:80"
+        networks:
+            - my-network
+        depends_on:
+            - backend
+            - database
+
+networks:
+    my-network:
+
+volumes:
+    docker-volume:
+
+
