@@ -18,8 +18,10 @@ jobs:
       - uses: actions/setup-java@v3
         #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
         with:
+          distribution: 'temurin'
           java-version: '22'
 
+
       - name: Build and test with Maven
-        run: mvn clean verify 
+        run: mvn clean verify --file /Users/daipablandine/Desktop/Devops/simple-api-student-main/pom.xml
 
