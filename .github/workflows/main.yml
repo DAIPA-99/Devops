@@ -18,5 +18,5 @@ jobs:
           java-version: 17
 
       - name: Build and test with Maven
-        run: mvn clean verify --file /path/to/pom.xml
+        run: mvn clean verify --file /Users/daipablandine/Desktop/Devops/simple-api-student-main/pom.xml
 
