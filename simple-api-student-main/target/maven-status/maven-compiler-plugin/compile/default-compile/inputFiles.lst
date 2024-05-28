@@ -1,0 +1,10 @@
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/entity/Department.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/entity/Student.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/dao/DepartmentDAO.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/service/StudentService.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/SimpleApiApplication.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/controller/StudentController.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/controller/GreetingController.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/dao/StudentDAO.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/controller/DepartmentController.java
+/Users/daipablandine/Desktop/Devops/simple-api-student-main/src/main/java/fr/takima/training/simpleapi/service/DepartmentService.java

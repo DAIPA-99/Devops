@@ -9,7 +9,7 @@ spring:
     generate-ddl: false
     open-in-view: true
   datasource:
-    url: jdbc:postgresql://mypostgres:5432/db
+    url: jdbc:postgresql://my-database:5432/db
     username: usr
     password: pwd
     driver-class-name: org.postgresql.Driver

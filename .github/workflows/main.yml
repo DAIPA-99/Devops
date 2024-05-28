@@ -12,10 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2.5.0
 
-      - name: Set up JDK 17
+      - name: Set up JDK 22
       - uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: '22'
 
       - name: Build and test with Maven
         run: mvn clean verify --file /Users/daipablandine/Desktop/Devops/simple-api-student-main/pom.xml
