@@ -23,5 +23,5 @@ jobs:
 
 
       - name: Build and test with Maven
-        run: mvn clean verify -f ./backend/pom.xml
+        run: mvn clean verify -f ./simple-api-student-main/pom.xml
 
