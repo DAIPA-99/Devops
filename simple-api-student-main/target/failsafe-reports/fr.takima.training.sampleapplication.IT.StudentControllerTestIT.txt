@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: fr.takima.training.sampleapplication.IT.StudentControllerTestIT
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 0.102 s <<< FAILURE! - in fr.takima.training.sampleapplication.IT.StudentControllerTestIT
-testPostStudent  Time elapsed: 0 s  <<< ERROR!
+Tests run: 7, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 0.045 s <<< FAILURE! - in fr.takima.training.sampleapplication.IT.StudentControllerTestIT
+testPostStudent  Time elapsed: 0.001 s  <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext
 Caused by: org.yaml.snakeyaml.constructor.DuplicateKeyException: 
 while constructing a mapping
@@ -28,7 +28,7 @@ found duplicate key hibernate
           ^
 
 
-testPostStudentWithoutDepartment  Time elapsed: 0.001 s  <<< ERROR!
+testPostStudentWithoutDepartment  Time elapsed: 0 s  <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext
 Caused by: org.yaml.snakeyaml.constructor.DuplicateKeyException: 
 while constructing a mapping
@@ -41,7 +41,7 @@ found duplicate key hibernate
           ^
 
 
-testGetNonExistingStudentById  Time elapsed: 0 s  <<< ERROR!
+testGetNonExistingStudentById  Time elapsed: 0.001 s  <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext
 Caused by: org.yaml.snakeyaml.constructor.DuplicateKeyException: 
 while constructing a mapping
