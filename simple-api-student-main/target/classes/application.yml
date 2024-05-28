@@ -7,7 +7,7 @@ spring:
           lob:
             non_contextual_creation: true
     generate-ddl: false
-    open-in-view: true
+    open-in-view: false
   datasource:
     url: jdbc:postgresql://my-database:5432/db
     username: usr
