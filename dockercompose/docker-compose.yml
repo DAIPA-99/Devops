@@ -6,7 +6,7 @@ services:
         build:
             context: "/Users/daipablandine/Desktop/Devops/frontend"
         ports:
-            - "8090:80"
+            - "8089:80"
         networks:
             - my-network
         depends_on:
@@ -14,7 +14,7 @@ services:
 
     backend:
         container_name: my-backend
-        build: 
+        build:
             context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
         ports:
             - "8090:80"
@@ -36,7 +36,7 @@ services:
 
     httpd:
         container_name: my-httpd
-        build: 
+        build:
             context: "/Users/daipablandine/Desktop/Devops/http"
         ports:
             - "80:80"
