@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+    frontend:
+        container_name: my-frontend
+        build:
+            context: "/Users/daipablandine/Desktop/Devops/my-frontend"
+        ports:
+            - "8090:8080"
+        networks:
+            - my-network
+        depends_on:
+            -backend
+
     backend:
         container_name: my-backend
         build: 
