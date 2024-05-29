@@ -2,14 +2,14 @@
 # tasks file for roles/frontend
 - name: Pull frontend image
   docker_image:
-    name: bdaipa/dockercompose-backend
+    name: bdaipa/dockercompose-frontend
     tag: latest
     source: pull
 
 - name: Run frontend
   docker_container:
     name: my-frontend
-    image: bdaipa/dockercompose-backend:latest
+    image: bdaipa/dockercompose-frontend:latest
     networks:
       - name: "my-network"
     ports:
