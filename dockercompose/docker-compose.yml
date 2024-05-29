@@ -4,18 +4,20 @@ services:
     frontend:
         container_name: my-frontend
         build:
-            context: "/Users/daipablandine/Desktop/Devops/my-frontend"
+            context: "/Users/daipablandine/Desktop/Devops/frontend"
         ports:
-            - "8090:8080"
+            - "8090:80"
         networks:
             - my-network
         depends_on:
-            -backend
+            -httpd
 
     backend:
         container_name: my-backend
         build: 
             context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
+        ports:
+            - "8090:80"
         networks:
             - my-network
         depends_on:
