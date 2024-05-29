@@ -26,7 +26,7 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./simple-api-student-main
           # Note: tags has to be all lower-case
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-backend:latest
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-backend:latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
@@ -37,7 +37,7 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./simpleapi
           # Note: tags has to be all lower-case
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-database:latest
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-database:latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
@@ -48,7 +48,7 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./http
           # Note: tags has to be all lower-case
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-httpd:latest
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-httpd:latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
