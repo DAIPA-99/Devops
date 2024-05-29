@@ -514,8 +514,11 @@ We have to make sure that we are in the repository of our project.
 Here are the steps visually:
 
 <img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/67697c19-1dee-44d0-a6aa-bcff34e0b623">
+
 <img width="342" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/ca59222a-41ba-40a4-86cc-f5420049e12f">
+
 <img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/ea2fc3bb-e58b-4b29-83e9-920fde352322">
+
 <img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/690086ac-c05b-4b79-9f0b-c6b13b2ef23c">
 
 The end result look like this:
