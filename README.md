@@ -641,4 +641,6 @@ jobs:
 To be abble to see the quality of our code we are going to use SonaCloud to have the analysis and reports of our code.
 
 Firstly we will create an organization
+<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/f08e0959-4250-44b8-91c4-74e8ae41518a">
+
 
