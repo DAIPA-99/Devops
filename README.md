@@ -10,7 +10,7 @@
 #   <center>  **DEVOPS** </center>
 
 
-# Discover Docker
+# TP 01 - Docker
 
 ## 1. Database
 
@@ -452,3 +452,24 @@ __Version Control__: Online repositories typically support versioning, enabling 
 __Scalability__: Online repositories are designed to handle large volumes of image data and can scale to accommodate growing storage requirements. This scalability ensures that repositories can effectively manage an increasing number of images as projects evolve and expand.
 
 __Integration with CI/CD Pipelines__: Many online repositories integrate seamlessly with continuous integration and continuous deployment (CI/CD) pipelines, allowing automated deployment of Docker images to various environments. This integration streamlines the development and deployment process, enabling faster release cycles and improved software delivery practices.
+
+# TP 02 - Github Actions
+
+## 1 Setup Github Actions
+### 1.1 First steps into the CI World
+
+For building and running our tests in our computer we have download maven in our computer computer using this link maven.apache.org and run these command to execute maven:
+
+* First step we have dezip the file and put it into our Destop folder and then start to execute this command in our CLI
+
+```bash
+cd apache-maven
+export PATH=/Users/daipablandine/Desktop/apache-maven/bin:$PATH
+source ~/.bash_profile
+mvn -version
+```
+And finally we have this result:
+
+
+
+
