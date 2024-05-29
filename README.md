@@ -511,22 +511,6 @@ Finally we can see GREEN on the actions proove that all tests have succeed.
 Firstly we have to add our docker hub credentials to the environment variables in GitHub Actions.
 To do that we have to go in settings -> secrets and variables -> Actions and click on New repository secret that appear in green put the name in the space Name* and your secret password or token inside the space Secret* and finally click on add secret appear in green.
 We have to make sure that we are in the repository of our project.
-Here are the steps visually:
-*1.
-
-<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/67697c19-1dee-44d0-a6aa-bcff34e0b623">
-*2.
-
-<img width="342" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/ca59222a-41ba-40a4-86cc-f5420049e12f">
-
-*3.
-
-<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/ea2fc3bb-e58b-4b29-83e9-920fde352322">
-
-*4.
-
-<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/690086ac-c05b-4b79-9f0b-c6b13b2ef23c">
-
 The end result look like this:
 
 <img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/237d5239-36ef-4ea7-a88e-54271ba66f48">
