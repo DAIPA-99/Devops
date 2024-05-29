@@ -511,9 +511,15 @@ Finally we can see GREEN on the actions proove that all tests have succeed.
 Firstly we have to add our docker hub credentials to the environment variables in GitHub Actions.
 To do that we have to go in settings -> secrets and variables -> Actions and click on New repository secret that appear in green put the name in the space Name* and your secret password or token inside the space Secret* and finally click on add secret appear in green.
 We have to make sure that we are in the repository of our project.
-The end result look like this:
+Here are the steps visually:
 
-***Capture d'écran***
+<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/67697c19-1dee-44d0-a6aa-bcff34e0b623">
+<img width="342" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/ca59222a-41ba-40a4-86cc-f5420049e12f">
+<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/ea2fc3bb-e58b-4b29-83e9-920fde352322">
+<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/690086ac-c05b-4b79-9f0b-c6b13b2ef23c">
+
+The end result look like this:
+<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/237d5239-36ef-4ea7-a88e-54271ba66f48">
 
 2- Build your docker images inside your GitHub Actions pipeline.
 
@@ -641,6 +647,6 @@ jobs:
 To be abble to see the quality of our code we are going to use SonaCloud to have the analysis and reports of our code.
 
 Firstly we will create an organization
-<img width="452" alt="image" src="https://github.com/DAIPA-99/Devops/assets/116890623/f08e0959-4250-44b8-91c4-74e8ae41518a">
+
 
 
