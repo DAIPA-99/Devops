@@ -2,7 +2,7 @@
 <br><br>
 
 
-###  <div style="text-align: right">  Data Engineering - P2024 <br> <br>  <time datetime="2024-05-29">2024/03/19</time> <br> <br> <u>Name </u>: DAIPA Blandine </div>
+###  <div style="text-align: right">  Data Engineering - P2024 <br> <br>  <time datetime="2024-03-19">2024/05/29</time> <br> <br> <u>Name </u>: DAIPA Blandine </div>
 <br> 
 
 
@@ -10,7 +10,7 @@
 #   <center>  **DEVOPS** </center>
 
 
-# Discover Docker
+# TP 01 - Docker
 
 ## 1. Database
 
@@ -317,3 +317,159 @@ With these endpoints  /departments/IRC/students on localhost, you can see this:
   }
 ]
 ```
+## 4. Http server
+
+#Basics
+
+Start by selecting a suitable base image for your HTTP server container. Create a basic landing page named index.html and place it inside your container. Additionally, create a Dockerfile with the following content:
+
+```Dockerfile
+# Utiliser l'image officielle httpd comme image de base
+FROM httpd:2.4
+# Copier index.html dans le répertoire de contenu web de Apache
+COPY index.html /usr/local/apache2/htdocs/
+COPY httpd.conf /usr/local/apache2/conf/httpd.conf
+```
+#Build and Run Docker
+
+Build and run your image with the following commands:
+
+```bash
+docker build -t my-http-server .
+docker run -d --network my-network --name my-http-container -p 8084:8080 my-http-server
+```
+
+#Customizing HTTPd Configuration
+
+After configuring our httpd.conf, we add the following element to the end of the file located at /usr/local/apache2/conf/httpd.conf:
+
+```Configuration
+<VirtualHost *:80>
+ProxyPreserveHost On
+ProxyPass / http://my-backend:8080/
+ProxyPassReverse / http://my-backend:8080/
+</VirtualHost>
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+```
+This configuration sets up the HTTP server as a reverse proxy to route requests to a backend API running at http://backendapi:8080/. Ensure that the backendapi hostname corresponds to the address of your backend API container within the Docker network.
+
+# Answer of question:
+
+A reverse proxy serves as an intermediary between clients and backend servers, efficiently distributing incoming web traffic to optimize performance and ensure high availability. It enhances security and privacy by shielding backend servers from direct exposure to external clients and offers SSL/TLS termination capabilities, simplifying certificate management and offloading decryption tasks. Additionally, reverse proxies improve performance by caching static content, reduce server load, and provide robust security features like content filtering and access control, fortifying defenses against malicious attacks and unauthorized access attempts.
+
+## 5. Link application
+
+To link our applications together using Docker Compose, we define a docker-compose.yml file with the following structure:
+
+```YML
+version: '3.7'
+
+services:
+    backend:
+        container_name: my-backend
+        build: 
+            context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
+        networks:
+            - my-network
+        depends_on:
+            - database
+
+    database:
+        build:
+            context: "/Users/daipablandine/Desktop/Devops"
+        container_name: my-database
+        environment:
+            POSTGRES_PASSWORD: pwd
+        networks:
+            - my-network
+        volumes:
+            - docker-volume:/var/lib/postgresql/data
+
+    httpd:
+        container_name: my-httpd
+        build: 
+            context: "/Users/daipablandine/Desktop/Devops/http"
+        ports:
+            - "80:80"
+        networks:
+            - my-network
+        depends_on:
+            - backend
+            - database
+
+networks:
+    my-network:
+volumes:
+    docker-volume:
+```
+# Explanation:
+
+In this configuration:
+
+** We define three services: backend, database, and httpd.
+** The backend service is built from a Dockerfile located in the specified context directory. It depends on the database service.
+** The database service is built from a Dockerfile located in the specified context directory. It uses the latest PostgreSQL image and sets the POSTGRES_PASSWORD environment variable.
+** The httpd service is built from a Dockerfile located in the specified context directory. It exposes port 80 and depends on both the backend and database services.
+** All services are connected to the my-network netw
+
+# Answer of question:
+
+Docker Compose is essential because it simplifies the process of orchestrating multi-container Docker applications. It allows developers to define and manage all the services, networks, and volumes required for an application in a single YAML file, the docker-compose.yml. With Docker Compose, developers can easily spin up, scale, and manage complex applications with multiple interconnected containers using simple commands like docker-compose up, docker-compose down, and docker-compose build. This tool streamlines the development, testing, and deployment workflows, making it easier to collaborate on projects and ensuring consistency across different environments. Overall, Docker Compose significantly enhances productivity and efficiency in containerized application development and deployment.
+
+## 6. Publish
+
+With these command we will able to publish our images of our application : 
+
+```bash
+docker login
+docker tag dockercompose-database dockercompose-database:1.0
+docker push bdaipa/dockercompose-database:1.0
+
+docker tag dockercompose-backend bdaipa/dockercompose-backend:1.0
+docker push bdaipa/dockercompose-backend:1.0  
+
+docker tag dockercompose-backend bdaipa/dockercompose-backend:1.0
+docker push bdaipa/dockercompose-backend:1.0
+```
+# Link:
+Link of my dockerhub:
+
+```Link
+https://hub.docker.com/repository/docker/bdaipa/my-database/general
+```
+
+# Answer of question:
+
+We put our images into an online repository for several reasons:
+
+__Accessibility__: Storing images in an online repository makes them easily accessible from anywhere with an internet connection, allowing for seamless sharing and distribution among team members or across different environments.
+
+__Backup and Recovery__: Online repositories serve as a backup for Docker images, providing a secure and reliable storage solution. In case of system failures or data loss, images can be recovered from the repository, ensuring continuity in development and deployment workflows.
+
+__Version Control__: Online repositories typically support versioning, enabling developers to track changes to images over time and roll back to previous versions if needed. This facilitates effective version control and collaboration in software development projects.
+
+__Scalability__: Online repositories are designed to handle large volumes of image data and can scale to accommodate growing storage requirements. This scalability ensures that repositories can effectively manage an increasing number of images as projects evolve and expand.
+
+__Integration with CI/CD Pipelines__: Many online repositories integrate seamlessly with continuous integration and continuous deployment (CI/CD) pipelines, allowing automated deployment of Docker images to various environments. This integration streamlines the development and deployment process, enabling faster release cycles and improved software delivery practices.
+
+# TP 02 - Github Actions
+
+## 1 Setup Github Actions
+### 1.1 First steps into the CI World
+
+For building and running our tests in our computer we have download maven in our computer computer using this link maven.apache.org and run these command to execute maven:
+
+* First step we have dezip the file and put it into our Destop folder and then start to execute this command in our CLI
+
+```bash
+cd apache-maven
+export PATH=/Users/daipablandine/Desktop/apache-maven/bin:$PATH
+source ~/.bash_profile
+mvn -version
+```
+And finally we have this result:
+
+
+
+
