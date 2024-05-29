@@ -2,7 +2,7 @@
 <br><br>
 
 
-###  <div style="text-align: right">  Data Engineering - P2024 <br> <br>  <time datetime="2024-03-19">2024/05/29</time> <br> <br> <u>Name </u>: DAIPA Blandine </div>
+###  <div style="text-align: right">  Data Engineering - P2024 <br> <br>  <time datetime="2024-05-29">2024/03/19</time> <br> <br> <u>Name </u>: DAIPA Blandine </div>
 <br> 
 
 
@@ -10,7 +10,7 @@
 #   <center>  **DEVOPS** </center>
 
 
-# TP 01 - Docker
+# TP PART 01 - Docker
 
 ## 1. Database
 
@@ -304,45 +304,6 @@ docker run --name springapi -d -p 8082:8080 backendapi
 ```
 With these endpoints  /departments/IRC/students on localhost, you can see this:
 
-```JSON
-[
-  {
-    "id": 1,
-    "firstname": "Eli",
-    "lastname": "Copter",
-    "department": {
-      "id": 1,
-      "name": "IRC"
-    }
-  }
-]
-```
-## 4. Http server
-
-#Basics
-
-Start by selecting a suitable base image for your HTTP server container. Create a basic landing page named index.html and place it inside your container. Additionally, create a Dockerfile with the following content:
-
-```Dockerfile
-# Utiliser l'image officielle httpd comme image de base
-FROM httpd:2.4
-# Copier index.html dans le répertoire de contenu web de Apache
-COPY index.html /usr/local/apache2/htdocs/
-COPY httpd.conf /usr/local/apache2/conf/httpd.conf
-```
-#Build and Run Docker
-
-Build and run your image with the following commands:
-
-```bash
-docker build -t my-http-server .
-docker run -d --network my-network --name my-http-container -p 8084:8080 my-http-server
-```
-
-#Customizing HTTPd Configuration
-
-After configuring our httpd.conf, we add the following element to the end of the file located at /usr/local/apache2/conf/httpd.conf:
-
 ```Configuration
 <VirtualHost *:80>
 ProxyPreserveHost On
@@ -368,7 +329,7 @@ version: '3.7'
 services:
     backend:
         container_name: my-backend
-        build: 
+        build:
             context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
         networks:
             - my-network
@@ -388,7 +349,7 @@ services:
 
     httpd:
         container_name: my-httpd
-        build: 
+        build:
             context: "/Users/daipablandine/Desktop/Devops/http"
         ports:
             - "80:80"
@@ -419,7 +380,7 @@ Docker Compose is essential because it simplifies the process of orchestrating m
 
 ## 6. Publish
 
-With these command we will able to publish our images of our application : 
+With these command we will able to publish our images of our application :
 
 ```bash
 docker login
@@ -427,7 +388,7 @@ docker tag dockercompose-database dockercompose-database:1.0
 docker push bdaipa/dockercompose-database:1.0
 
 docker tag dockercompose-backend bdaipa/dockercompose-backend:1.0
-docker push bdaipa/dockercompose-backend:1.0  
+docker push bdaipa/dockercompose-backend:1.0
 
 docker tag dockercompose-backend bdaipa/dockercompose-backend:1.0
 docker push bdaipa/dockercompose-backend:1.0
@@ -458,9 +419,9 @@ __Integration with CI/CD Pipelines__: Many online repositories integrate seamles
 ## 1 Setup Github Actions
 ### 1.1 First steps into the CI World
 
-For building and running our tests in our computer we have download maven in our computer computer using this link maven.apache.org and run these command to execute maven:
+To build and run our tests on our local machine, we downloaded Maven from this link maven.apache.org and executed the following commands:
 
-* First step we have dezip the file and put it into our Destop folder and then start to execute this command in our CLI
+* Firstly, we extracted the downloaded file and placed it into our Desktop folder. Then, in our CLI, we navigated to the extracted Maven directory and set up the environment variables:
 
 ```bash
 cd apache-maven
@@ -468,8 +429,216 @@ export PATH=/Users/daipablandine/Desktop/apache-maven/bin:$PATH
 source ~/.bash_profile
 mvn -version
 ```
-And finally we have this result:
+The result showed:
+
+```CLI
+(base) daipablandine@MacBook-Air-de-DAIPA apache-maven % mvn -version
+Apache Maven 3.9.7 (8b094c9513efc1b9ce2d952b3b9c8eaedaf8cbf0)
+Maven home: /Users/daipablandine/Desktop/apache-maven
+Java version: 22, vendor: Oracle Corporation, runtime: /Users/daipablandine/Library/Java/JavaVirtualMachines/openjdk-22/Contents/Home
+Default locale: en_GB, platform encoding: UTF-8
+OS name: "mac os x", version: "14.4.1", arch: "aarch64", family: "mac"
+```
+Now that Maven is configured, to build and run our tests, we need to navigate to the directory where our pom.xml file is located and execute the following command:
+
+```CLI
+mvn clean verify
+```
+This command displays various information on our computer, and at the end, it shows "BUILD SUCCESS," like this:
+
+```CLI
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.248 s - in fr.takima.training.sampleapplication.IT.StudentControllerTestIT
+2024-05-28 11:43:41.797  INFO 71884 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-28 11:43:41.798  INFO 71884 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-05-28 11:43:42.275  INFO 71884 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- failsafe:2.22.2:verify (default) @ simple-api ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.714 s
+[INFO] Finished at: 2024-05-28T11:43:42+02:00
+[INFO] ------------------------------------------------------------------------
+```
+However, this manual process isn't ideal, as it requires manual intervention every time someone commits and pushes code to the repository. Therefore, we will utilize Github Actions
+
+# Answer of question:
+
+2-1 what are testcontainers?
+
+Testcontainers is a Java library that provides lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container during unit tests. These containers are launched on demand, allowing developers to easily set up and tear down isolated environments for testing purposes. Testcontainers simplifies integration testing by managing the lifecycle of these containers within test scenarios.
+
+In our project forlder we have to create this directories .github/workflows to be abble to create the file main.yml inside it with these elements:
+
+```YML
+name: CI devops 2024
+on:
+  #to begin you want to launch this job in main and develop
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      #checkout your github code using actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build and test with Maven
+        run: mvn clean verify -f ./simple-api-student-main/pom.xml
+```
+Finally we can see GREEN on the actions proove that all tests have succeed.
+
+### 1.2 First steps into the CD World
+
+1- Add your docker hub credentials to the environment variables in GitHub Actions (and let them secured).
+
+Firstly we have to add our docker hub credentials to the environment variables in GitHub Actions.
+To do that we have to go in settings -> secrets and variables -> Actions and click on New repository secret that appear in green put the name in the space Name* and your secret password or token inside the space Secret* and finally click on add secret appear in green.
+We have to make sure that we are in the repository of our project.
+The end result look like this:
+
+***Capture d'écran***
+
+2- Build your docker images inside your GitHub Actions pipeline.
+
+```YML
+    build-and-push-docker-image:
+      needs: test-backend
+      # run only when code is compiling and tests are passing
+      runs-on: ubuntu-22.04
+
+      # steps to perform in job
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2.5.0
+
+        - name: Build and push backend
+          uses: docker/build-push-action@v3
+          with:
+            # relative path to the place where source code with Dockerfile is located
+            context: ./simple-api-student-main
+            # Note: tags has to be all lower-case
+            tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-backend:latest
+
+        - name: Build and push database
+          # DO the same for database
+          uses: docker/build-push-action@v3
+          with:
+            # relative path to the place where source code with Dockerfile is located
+            context: ./simpleapi
+            # Note: tags has to be all lower-case
+            tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-database:latest
+
+        - name: Build and push httpd
+          # DO the same for httpd
+          uses: docker/build-push-action@v3
+          with:
+            # relative path to the place where source code with Dockerfile is located
+            context: ./http
+            # Note: tags has to be all lower-case
+            tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-httpd:latest
+```
+
+3- Publish your docker images when there is a commit on the main branch.
+
+We have put our docker login and our credentials on secrets in main.yml, we modify job Build image and push to add push action for backend, database and frontend.
+And the final result look like this in our main.yml:
+
+```YML
+name: CI devops 2024
+on:
+  #to begin you want to launch this job in main and develop
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
 
 
 
+jobs:
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      #checkout your github code using actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        #do the same with another action (actions/setup-java@v3) that enable to setup jdk 17
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build and test with Maven
+        run: mvn clean -B verify sonar:sonar -Dsonar.projectKey="daipa-99_blandine" -Dsonar.organization="daipa-99" -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}} -f ./simple-api-student-main/pom.xml
+
+  # define job to build and publish docker image
+  build-and-push-docker-image:
+    needs: test-backend
+    # run only when code is compiling and tests are passing
+    runs-on: ubuntu-22.04
+
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./simple-api-student-main
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-backend:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push database
+        # DO the same for database
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./simpleapi
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-database:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push httpd
+        # DO the same for httpd
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./http
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/devops-dockercompose-httpd:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+```
+# Setup Quality Gate
+
+To be abble to see the quality of our code we are going to use SonaCloud to have the analysis and reports of our code.
+
+Firstly we will create an organization
 
