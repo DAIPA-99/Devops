@@ -17,7 +17,7 @@ services:
         build:
             context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
         ports:
-            - "8090:80"
+            - "8080:80"
         networks:
             - my-network
         depends_on:
