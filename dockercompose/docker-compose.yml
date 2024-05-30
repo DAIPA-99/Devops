@@ -10,7 +10,7 @@ services:
         networks:
             - my-network
         depends_on:
-            -httpd
+            - httpd
 
     backend:
         container_name: my-backend
