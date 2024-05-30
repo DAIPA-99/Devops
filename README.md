@@ -1000,4 +1000,5 @@ And for database :
     ansible_python_interpreter: /usr/bin/python3
 
 ```
-We just have to change the name and image for the others. we can see it in our files into my-project -> ansible -> roles -> choose one role -> tasks
+We just have to change the name and image for the others. we can see it in our files into my-project -> ansible -> roles -> choose one role -> tasks.
+
