@@ -272,7 +272,7 @@ A multistage build in Docker is used to optimize the Docker image size and impro
 
 TO do this we download the source code of simpleapi and then we configure the file application.yml like this:
 
-```yml
+```yaml
 spring:
   jpa:
     properties:
@@ -323,7 +323,7 @@ A reverse proxy serves as an intermediary between clients and backend servers, e
 
 To link our applications together using Docker Compose, we define a docker-compose.yml file with the following structure:
 
-```YML
+```yaml
 version: '3.7'
 
 services:
@@ -431,7 +431,7 @@ mvn -version
 ```
 The result showed:
 
-```CLI
+```bash
 (base) daipablandine@MacBook-Air-de-DAIPA apache-maven % mvn -version
 Apache Maven 3.9.7 (8b094c9513efc1b9ce2d952b3b9c8eaedaf8cbf0)
 Maven home: /Users/daipablandine/Desktop/apache-maven
@@ -441,12 +441,12 @@ OS name: "mac os x", version: "14.4.1", arch: "aarch64", family: "mac"
 ```
 Now that Maven is configured, to build and run our tests, we need to navigate to the directory where our pom.xml file is located and execute the following command:
 
-```CLI
+```bash
 mvn clean verify
 ```
 This command displays various information on our computer, and at the end, it shows "BUILD SUCCESS," like this:
 
-```CLI
+```bash
 [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.248 s - in fr.takima.training.sampleapplication.IT.StudentControllerTestIT
 2024-05-28 11:43:41.797  INFO 71884 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-05-28 11:43:41.798  INFO 71884 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
@@ -475,7 +475,7 @@ Testcontainers is a Java library that provides lightweight, throwaway instances 
 
 In our project forlder we have to create this directories .github/workflows to be abble to create the file main.yml inside it with these elements:
 
-```YML
+```yaml
 name: CI devops 2024
 on:
   #to begin you want to launch this job in main and develop
@@ -517,7 +517,7 @@ The end result look like this:
 
 2- Build your docker images inside your GitHub Actions pipeline.
 
-```YML
+```yaml
     build-and-push-docker-image:
       needs: test-backend
       # run only when code is compiling and tests are passing
@@ -560,7 +560,7 @@ The end result look like this:
 We have put our docker login and our credentials on secrets in main.yml, we modify job Build image and push to add push action for backend, database and frontend.
 And the final result look like this in our main.yml:
 
-```YML
+```yaml
 name: CI devops 2024
 on:
   #to begin you want to launch this job in main and develop
@@ -691,7 +691,7 @@ To achieve this, we need to divide the main.yml file of our workflows into two s
 
 * test-backend.yml:
 
-```YML
+```yaml
 name: Test Backend
  
 on:
@@ -718,7 +718,7 @@ jobs:
 
 * build-and-push-docker-image.yml:
 
-```YML
+```yaml
 name: Build and Push Docker Image
 
 on:
@@ -797,7 +797,7 @@ And when you push this in actions the job will look like this after execution:
 
 First of all we create an ansible project in this directory Devops/my-project/ansible/inventories/ and then we create the file setup.yml with these elements:
 
-```YML
+```yaml
 all:
  vars:
    ansible_user: centos
@@ -810,14 +810,14 @@ all:
 before this we have download our key id_rsa and copy it into ~/.ssh/id_rsa.
 We have to download ansible using this command on our CLI:
 
-```CLI
+```bash
 pip install ansible
 ```
 And then we test our inventory with ping command:
 
-```Ansible
+```yaml
 ansible all -i inventories/setup.yml -m ping
-````
+```
 
 and it return pong!
 
@@ -825,7 +825,7 @@ and it return pong!
 
 we have to setup module using :
 
-```Ansible
+```yaml
 ansible all -i inventories/setup.yml -m setup -a "filter=ansible_distribution*"
 ```
 The result look like this :
@@ -834,12 +834,170 @@ The result look like this :
 
 Then desinstalled Apache httpd server on our machine:
 
-```Ansible
+```yaml
 ansible all -i inventories/setup.yml -m yum -a "name=httpd state=absent" --become
 ```
 
 ![Alt text](image-10.png)
 
+# Playbooks
 
+# First playbook
 
+To initiate our tasks, we need to create a playbook.yml file. Initially, we'll establish a test connection, which will be added to our playbook.yml file as follows:
 
+```yaml
+- hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+   - name: Test connection
+     ping:
+```
+Execute the playbook using the following command: 
+
+```bash
+ansible-playbook -i inventories/setup.yml playbook.yml
+```
+Upon execution, we obtain the following result:
+
+![Alt text](image-11.png)
+
+# Advanced Playbook
+
+Now we will create a playbook to install docker, in the same playbook we will put this:
+
+```yaml
+- hosts: all
+  gather_facts: false
+  become: true
+
+# Install Docker
+  tasks:
+
+  - name: Install device-mapper-persistent-data
+    yum:
+      name: device-mapper-persistent-data
+      state: latest
+
+  - name: Install lvm2
+    yum:
+      name: lvm2
+      state: latest
+
+  - name: add repo docker
+    command:
+      cmd: sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: Install Docker
+    yum:
+      name: docker-ce
+      state: present
+
+  - name: Install python3
+    yum:
+      name: python3
+      state: present
+
+  - name: Install docker with Python 3
+    pip:
+      name: docker
+      executable: pip3
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+
+  - name: Make sure Docker is running
+    service: name=docker state=started
+    tags: docker
+```
+
+The result look like this:
+
+![Alt text](image-12.png)
+
+# Using roles
+
+To create a roles we have to use this syntax, for exemple the role od docker :
+
+```yaml
+ansible-galaxy init roles/docker
+```
+We have to this for all our tasks : docker, app, backend, database, network, proxy and later for frontend
+
+![Alt text](image-13.png)
+
+after creating each role we have to put information into main.yml of each rôle. For example the rôle of docker is look like this:
+
+```yaml
+---
+# install_docker/tasks/main.yml
+# Install Docker
+
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+
+- name: add repo docker
+  command:
+    cmd: sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install Docker
+  yum:
+    name: docker-ce
+    state: present
+
+- name: Install python3
+  yum:
+    name: python3
+    state: present
+
+- name: Install docker with Python 3
+  pip:
+    name: docker
+    executable: pip3
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Make sure Docker is running
+  service: name=docker state=started
+  tags: docker
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+- name: Log in to Docker Hub
+  docker_login:
+    username: bdaipa
+    password: "@Save2018"
+    reauthorize: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+```
+And for database :
+
+```yaml
+---
+# tasks file for roles/database
+- name: Pull database image
+  docker_image:
+    name: bdaipa/dockercompose-database
+    tag: latest
+    source: pull
+
+- name: Run database
+  docker_container:
+    name: my-database
+    image: bdaipa/dockercompose-database:latest
+    networks:
+      - name: "my-network"
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+```
+We just have to change the name and image for the others. we can see it in our files into my-project -> ansible -> roles -> choose one role -> tasks
