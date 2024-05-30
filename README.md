@@ -638,9 +638,191 @@ jobs:
 ```
 # Setup Quality Gate
 
-To be abble to see the quality of our code we are going to use SonaCloud to have the analysis and reports of our code.
+To ensure the quality of our code, we'll utilize SonarCloud for code analysis and reporting.
 
-Firstly we will create an organization
+1. Create an Organization:
+* Navigate to "My Projects" and click on the "+" button.
+* Choose "Create new organization."
+
+![Alt text](image.png)
+
+2. Manual Organization Creation:
+* On the organization creation page, select "Create one manually" at the end of the available choices, such as GitHub.
+
+![Alt text](image-1.png)
+
+3. Name and Key Generation:
+* Provide a name for the organization, and a key will be generated based on the name.
+
+![Alt text](image-2.png)
+
+4. Choose Plan and Create:
+* Select the free plan and click on "Create Organization."
+
+![Alt text](image-3.png)
+
+5. Organization Overview:
+After creating the organization, you'll see the overview, including the organization name and key.
+
+![Alt text](image-4.png)
+
+6. Analyze Code:
+Navigate to your organization, go into "Branches" -> "Main," and view the analyses of your code.
+
+![Alt text](image-5.png)
+
+# Explanation
+
+In SonarCloud's code analyses, we observe elements such as New Issues, Accepted Issues, Coverage FAILED, Duplications, and Security Hotspots FAILED. These metrics provide insights into the quality of our code.
+
+* New Issues: This refers to newly identified issues in your codebase since the last analysis. These issues could include bugs, code smells, or security vulnerabilities.
+
+* Accepted Issues: These are existing issues in your codebase that have been acknowledged and accepted without resolution. It's important to track these issues to ensure they are addressed in future development cycles.
+
+* Coverage FAILED: This indicates that the code coverage threshold defined in your project settings has not been met. Code coverage measures the percentage of your codebase that is covered by automated tests. A low coverage percentage may indicate areas of your code that lack proper testing.
+
+* Duplications: This insight identifies code duplication within your codebase. Duplicated code can lead to maintenance challenges, as changes need to be applied to multiple places. Reducing duplication can improve code maintainability and readability.
+
+* Security Hotspots FAILED: Security hotspots are areas of your code that may have security vulnerabilities or weaknesses. A failed security hotspot analysis indicates that these vulnerabilities have been identified and need attention. Addressing security hotspots is crucial for mitigating potential security risks in your application.
+
+## Bonus: split pipelines (Optional)
+
+To achieve this, we need to divide the main.yml file of our workflows into two separate parts and establish a connection to perform testing first, followed by building and pushing images of our containers. Consequently, our workflows will now consist of two separate YAML files: test-backend.yml and build-and-push-docker-image.yml. Here's a glimpse of how these files are structured:
+
+* test-backend.yml:
+
+```YML
+name: Test Backend
+ 
+on:
+  push:
+    branches:
+      - main
+      - develop
+    
+jobs:
+  test-backend:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2.5.0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+ 
+      - name: Build and test with Maven
+        run: mvn clean -B verify sonar:sonar -Dsonar.projectKey="daipa-99_blandine" -Dsonar.organization="daipa-99" -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{secrets.SONAR_TOKEN}} -f ./simple-api-student-main/pom.xml
+
+````
+
+* build-and-push-docker-image.yml:
+
+```YML
+name: Build and Push Docker Image
+
+on:
+  workflow_run:
+    workflows: ["Test Backend"]
+    types:
+      - completed
+    branches: main
+
+jobs:
+  build-and-push-docker-image:
+    # run only when code is compiling and tests are passing
+    runs-on: ubuntu-22.04
+
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./simple-api-student-main
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-backend:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push database
+        # DO the same for database
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-database:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push httpd
+        # DO the same for httpd
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./http
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-httpd:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push frontend
+        # DO the same for httpd
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./frontend
+          # Note: tags has to be all lower-case
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/dockercompose-frontend:latest
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+```
+And when you push this in actions the job will look like this after execution:
+
+![Alt text](image-6.png)
+
+
+# TP PART 03 - Ansible
+
+# Introduction
+
+# Inventories
+
+First of all we create an ansible project in this directory Devops/my-project/ansible/inventories/ and then we create the file setup.yml with these elements:
+
+```YML
+all:
+ vars:
+   ansible_user: centos
+   ansible_ssh_private_key_file: ~/.ssh/id_rsa
+ children:
+   prod:
+     hosts: blandine.daipa.takima.cloud
+
+```
+before this we have download our key id_rsa and copy it into ~/.ssh/id_rsa.
+We have to download ansible using this command on our CLI:
+
+```CLI
+pip install ansible
+```
+And then we test our inventory with ping command:
+
+```Ansible
+ansible all -i inventories/setup.yml -m ping
+````
+
+and it return pong!
+
+![Alt text](image-8.png)
+
 
 
 
