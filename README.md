@@ -823,6 +823,23 @@ and it return pong!
 
 ![Alt text](image-8.png)
 
+we have to setup module using :
+
+```Ansible
+ansible all -i inventories/setup.yml -m setup -a "filter=ansible_distribution*"
+```
+The result look like this :
+
+![Alt text](image-9.png)
+
+Then desinstalled Apache httpd server on our machine:
+
+```Ansible
+ansible all -i inventories/setup.yml -m yum -a "name=httpd state=absent" --become
+```
+
+![Alt text](image-10.png)
+
 
 
 
