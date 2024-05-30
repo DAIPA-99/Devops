@@ -1001,4 +1001,7 @@ And for database :
 
 ```
 We just have to change the name and image for the others. we can see it in our files into my-project -> ansible -> roles -> choose one role -> tasks.
+<<<<<<< HEAD
 
+=======
+>>>>>>> e1313680c0ad61b5321b09763c61a305278c5550

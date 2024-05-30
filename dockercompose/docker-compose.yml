@@ -4,20 +4,20 @@ services:
     frontend:
         container_name: my-frontend
         build:
-            context: "/Users/daipablandine/Desktop/Devops/frontend"
+            context: "/Users/daipablandine/Documents/Devops/frontend"
         ports:
             - "8089:80"
         networks:
             - my-network
         depends_on:
-            -httpd
+            - httpd
 
     backend:
         container_name: my-backend
         build:
-            context: "/Users/daipablandine/Desktop/Devops/simple-api-student-main"
+            context: "/Users/daipablandine/Documents/Devops/simple-api-student-main"
         ports:
-            - "8080:80"
+            - "8087:80"
         networks:
             - my-network
         depends_on:
@@ -25,7 +25,7 @@ services:
 
     database:
         build:
-            context: "/Users/daipablandine/Desktop/Devops"
+            context: "/Users/daipablandine/Documents/Devops"
         container_name: my-database
         environment:
             POSTGRES_PASSWORD: pwd
@@ -37,7 +37,7 @@ services:
     httpd:
         container_name: my-httpd
         build:
-            context: "/Users/daipablandine/Desktop/Devops/http"
+            context: "/Users/daipablandine/Documents/Devops/http"
         ports:
             - "80:80"
         networks:
